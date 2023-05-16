@@ -1,39 +1,69 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# EasyCompass
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/guides/libraries/writing-package-pages).
+A Flutter package for accessing and displaying compass heading information. This package provides a
+simple and convenient way to retrieve the compass heading using the device's magnetometer sensor and
+display it visually.
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-library-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/developing-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+<img src="https://raw.githubusercontent.com/tajaouart/easy_compass/master/easy_compass_demo.gif" height="600"/>
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- Stream compass events with heading information
+- Visualize compass heading with a rotating image
 
-## Getting started
+## Getting Started
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+To use this package, add `easy_compass` as a dependency in your `pubspec.yaml` file.
 
 ## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+Import the `easy_compass` package:
 
 ```dart
-const like = 'sample';
+import 'package:easy_compass/easy_compass.dart';
 ```
 
-## Additional information
+### Stream Compass Events
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+Use the `EasyCompass.stream` getter to access the compass event stream. The stream
+emits `CompassEvent` objects with the heading information.
+
+```dart
+
+Stream<CompassEvent> compassStream = EasyCompass.stream;
+```
+
+### Display Compass Heading
+
+Subscribe to the compass event stream and update your UI to display the compass heading. For
+example, you can use the `Transform.rotate` widget to rotate an image based on the heading:
+
+```dart
+StreamBuilder<CompassEvent>(
+  stream: compassStream,
+  builder: (context, snapshot) {
+  final heading = snapshot.data?.heading ?? 0;
+
+  return Transform.rotate(
+    angle: -heading * (math.pi / 180),
+    child: Image.asset('assets/compass.jpg'),
+  );
+},
+)
+```
+
+## Additional Information
+
+For more information about the EasyCompass package, please refer to
+the [documentation](https://pub.dev/documentation/easy_compass/latest/).
+
+## Contribution
+
+We welcome contributions! If you find a bug or have a feature request,
+please [open an issue](https://github.com/tajaouart/easy_compass/issues) on GitHub. If you would like to
+contribute code, create a [pull request](https://github.com/tajaouart/easy_compass/pulls) with your
+changes.
+
+## License
+
+This package is licensed under the [MIT License](https://opensource.org/licenses/MIT).
