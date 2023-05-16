@@ -18,7 +18,26 @@
  */
 
 
-library easy_compass;
+/// Represents a compass heading event.
+class CompassEvent {
+  /// The compass heading value in degrees.
+  final int heading;
 
-export 'src/compass_event.dart';
-export 'src/compass.dart';
+  /// Creates a new instance of [CompassEvent] with the given [heading].
+  const CompassEvent({required this.heading});
+
+  @override
+  String toString() {
+    return 'CompassEvent(heading: $heading)';
+  }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+          other is CompassEvent &&
+              runtimeType == other.runtimeType &&
+              heading == other.heading;
+
+  @override
+  int get hashCode => heading.hashCode;
+}
