@@ -9,7 +9,6 @@ display it visually.
 ## Features
 
 - Stream compass events with heading information
-- Visualize compass heading with a rotating image
 
 ## Getting Started
 
@@ -30,7 +29,7 @@ emits `CompassEvent` objects with the heading information.
 
 ```dart
 
-Stream<CompassEvent> compassStream = EasyCompass.stream;
+Stream<CompassEvent> compassStream = EasyCompass().stream;
 ```
 
 ### Display Compass Heading
