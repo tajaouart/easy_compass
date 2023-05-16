@@ -1,44 +1,72 @@
 import 'package:flutter/material.dart';
+import 'package:easy_compass/easy_compass.dart';
+import 'dart:math' as math;
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Easy Compass Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.deepPurple,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const CompassPage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class CompassPage extends StatefulWidget {
+  const CompassPage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  CompassPageState createState() => CompassPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class CompassPageState extends State<CompassPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        title: const Text('Easy Compass App'),
       ),
-      body: Center(),
+      body: Center(
+        child: StreamBuilder<CompassEvent>(
+          stream: EasyCompass().stream,
+          builder: (context, snapshot) {
+            final heading = snapshot.data?.heading ?? 0;
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  '${(heading + 180) % 360 - 180}',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 30,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.2,
+                ),
+                Transform.rotate(
+                  angle: -heading * (math.pi / 180),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.asset('assets/compass.jpg'),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
     );
   }
 }
